@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>CyclAlp – Vélos disponibles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg-dark: #05060a;
+      --bg-light: #f4f7fa;
+      --accent: #00a878;
+      --accent-soft: #c5f0e3;
+      --text-main: #1f2933;
+      --text-light: #ffffff;
+      --max-width: 1200px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text-main);
+      background: #ffffff;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* Bandeau top info */
+
+    .top-bar {
+      background: #111827;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      padding: 6px 16px;
+    }
+
+    .top-bar__inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .top-bar__left {
+      font-weight: 500;
+    }
+
+    .top-bar__right {
+      display: flex;
+      gap: 16px;
+      font-size: 0.8rem;
+    }
+
+    /* Header + navigation */
+
+    header {
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #ffffffee;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      position: relative;
+    }
+
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav__logo img {
+      height: 32px;
+      width: auto;
+      display: block;
+    }
+
+    .nav__logo span {
+      color: var(--accent);
+    }
+
+    .nav__menu {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 0.9rem;
+    }
+
+    .nav__item {
+      position: relative;
+    }
+
+    .nav__link {
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      padding: 4px 0;
+    }
+
+    .nav__item:hover .nav__link {
+      color: var(--accent);
+    }
+
+    .nav__cta {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 8px 18px;
+      border: 1px solid var(--accent);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn--solid {
+      background: var(--accent);
+      color: var(--text-light);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    /* Burger mobile */
+
+    .nav__burger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .nav__burger span {
+      width: 20px;
+      height: 2px;
+      background: #111827;
+    }
+
+    /* Hero / en-tête page */
+
+    .page-hero {
+      background: var(--bg-light);
+      border-bottom: 1px solid #e5e7eb;
+      padding: 32px 16px;
+    }
+
+    .page-hero__inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .page-hero__title {
+      font-size: 1.9rem;
+      margin-bottom: 4px;
+    }
+
+    .page-hero__subtitle {
+      font-size: 0.95rem;
+      color: #6b7280;
+      max-width: 40rem;
+    }
+
+    .page-hero__info {
+      font-size: 0.8rem;
+      color: #6b7280;
+      text-align: right;
+    }
+
+    /* Layout principal */
+
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 24px;
+    }
+
+    /* Filtres */
+
+    .filters {
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      padding: 16px 16px 18px;
+      background: #ffffff;
+      position: sticky;
+      top: 90px;
+      align-self: flex-start;
+      font-size: 0.9rem;
+    }
+
+    .filters__title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .filters__reset {
+      font-size: 0.8rem;
+      color: #6b7280;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-bottom: 12px;
+    }
+
+    .filters__group {
+      margin-bottom: 14px;
+    }
+
+    .filters__group:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .filters__group-label {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    .filters select,
+    .filters input[type="number"] {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 9px;
+      border: 1px solid #d1d5db;
+      font-size: 0.9rem;
+    }
+
+    .filters__checkboxes label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      margin-bottom: 4px;
+      cursor: pointer;
+    }
+
+    .filters__checkboxes input[type="checkbox"] {
+      accent-color: var(--accent);
+    }
+
+    .filters__hint {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    /* Liste vélos */
+
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+    }
+
+    .results-header__count {
+      font-weight: 500;
+    }
+
+    .results-header__sort {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+    }
+
+    .results-header__sort select {
+      padding: 6px 8px;
+      border-radius: 9px;
+      border: 1px solid #d1d5db;
+      font-size: 0.85rem;
+    }
+
+    .bikes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 8px;
+    }
+
+    .bike-card {
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .bike-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(15,23,42,0.08);
+    }
+
+    .bike-card__image {
+      background: radial-gradient(circle at top, #0f172a 0, #020617 65%);
+      padding: 16px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      text-align: center;
+    }
+
+    .bike-card__body {
+      padding: 12px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .bike-card__name {
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+
+    .bike-card__brand {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .bike-card__meta {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .bike-card__price {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .bike-card__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 6px;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      border-radius: 999px;
+      padding: 3px 8px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+    }
+
+    .tag--green {
+      border-color: rgba(0,168,120,0.35);
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .bike-card__cta {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+    }
+
+    .results-empty {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    /* Responsif */
+
+    @media (max-width: 1024px) {
+      .page {
+        grid-template-columns: 1fr;
+      }
+
+      .filters {
+        position: static;
+      }
+
+      .bikes-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav__menu,
+      .nav__cta {
+        display: none;
+      }
+
+      .nav__burger {
+        display: flex;
+      }
+
+      .nav--open .nav__menu,
+      .nav--open .nav__cta {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        inset: 100% 0 auto;
+        padding: 16px;
+        background: #fff;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .nav--open {
+        position: relative;
+      }
+
+      .page-hero__inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .page-hero__info {
+        text-align: left;
+      }
+
+      .bikes-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bandeau haut -->
+  <div class="top-bar">
+    <div class="top-bar__inner">
+      <div class="top-bar__left">
+        Sélection CyclAlp – essais possibles sur rendez-vous
+      </div>
+      <div class="top-bar__right">
+        <span>Châtel-St-Denis</span>
+        <span>Magasin & atelier</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <header>
+    <nav class="nav" id="mainNav">
+      <div class="nav__logo">
+        <img src="logo-cyclalp.svg" alt="Logo CyclAlp" onerror="this.style.display='none';">
+        <div>CYC<span>ALP</span></div>
+      </div>
+
+      <div class="nav__menu">
+        <div class="nav__item">
+          <a href="index.html#velos" class="nav__link">Accueil</a>
+        </div>
+        <div class="nav__item">
+          <a href="index.html#atelier" class="nav__link">Atelier</a>
+        </div>
+        <div class="nav__item">
+          <a href="#" class="nav__link">Vélos</a>
+        </div>
+        <div class="nav__item">
+          <a href="index.html#univers" class="nav__link">Univers</a>
+        </div>
+        <div class="nav__item">
+          <a href="index.html#boutique" class="nav__link">Magasin</a>
+        </div>
+      </div>
+
+      <div class="nav__cta">
+        <button class="btn" onclick="location.href='index.html#atelier'">Prendre RDV</button>
+        <button class="btn btn--solid" onclick="location.href='index.html#boutique'">Contact</button>
+      </div>
+
+      <div class="nav__burger" id="burger">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- En-tête de la page -->
+  <section class="page-hero">
+    <div class="page-hero__inner">
+      <div>
+        <h1 class="page-hero__title">Vélos disponibles chez CyclAlp</h1>
+        <p class="page-hero__subtitle">
+          Une sélection de vélos de route, gravel, VTT et électriques pensée
+          pour rouler en Suisse, avec des montages adaptés au dénivelé, au
+          confort et à la fiabilité sur le long terme.
+        </p>
+      </div>
+      <div class="page-hero__info">
+        <div>Tests & essais possibles sur rendez-vous.</div>
+        <div>Contactez-nous pour vérifier les stocks en temps réel.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contenu principal -->
+  <main class="page">
+    <!-- Filtres -->
+    <aside class="filters">
+      <div class="filters__title">Filtres</div>
+      <div class="filters__reset" id="resetFilters">Réinitialiser les filtres</div>
+
+      <div class="filters__group">
+        <div class="filters__group-label">Type de vélo</div>
+        <select id="filterType">
+          <option value="">Tous les types</option>
+          <option value="route">Route</option>
+          <option value="gravel">Gravel</option>
+          <option value="vtt">VTT</option>
+          <option value="urbain">Urbain / Trekking</option>
+        </select>
+      </div>
+
+      <div class="filters__group">
+        <div class="filters__group-label">Pratique principale</div>
+        <select id="filterUse">
+          <option value="">Toutes les pratiques</option>
+          <option value="endurance">Endurance / longue distance</option>
+          <option value="montagne">Montagne / cols</option>
+          <option value="trail">Trail / all-mountain</option>
+          <option value="urbain">Urbain / déplacements</option>
+          <option value="voyage">Voyage / bikepacking</option>
+        </select>
+      </div>
+
+      <div class="filters__group">
+        <div class="filters__group-label">Assistance électrique</div>
+        <div class="filters__checkboxes">
+          <label>
+            <input type="checkbox" id="filterElectricOnly" />
+            Uniquement vélos électriques
+          </label>
+        </div>
+      </div>
+
+      <div class="filters__group">
+        <div class="filters__group-label">Budget max (CHF)</div>
+        <input type="number" id="filterMaxPrice" placeholder="Ex. 3500" min="0" step="100" />
+        <div class="filters__hint">
+          Laissez vide pour afficher tous les budgets.
+        </div>
+      </div>
+    </aside>
+
+    <!-- Résultats -->
+    <section>
+      <div class="results-header">
+        <div class="results-header__count" id="resultsCount">
+          0 vélos trouvés
+        </div>
+        <div class="results-header__sort">
+          <span>Trier par :</span>
+          <select id="sortBy">
+            <option value="price-asc">Prix croissant</option>
+            <option value="price-desc">Prix décroissant</option>
+            <option value="brand">Marque</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="bikes-grid" id="bikesGrid">
+        <!-- Cartes vélos générées en JS -->
+      </div>
+
+      <div class="results-empty" id="resultsEmpty" style="display:none;">
+        Aucun vélo ne correspond à ces critères pour l’instant.  
+        Essayez d’élargir le budget ou de changer de type / pratique.
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Burger mobile
+    const burger = document.getElementById("burger");
+    const nav = document.getElementById("mainNav");
+
+    burger.addEventListener("click", () => {
+      nav.classList.toggle("nav--open");
+    });
+
+    // Données vélos (exemple, à adapter selon ton stock réel)
+    const bikes = [
+      {
+        id: 1,
+        name: "Alp Route 01",
+        brand: "CyclAlp x Partner",
+        type: "route",
+        use: "montagne",
+        price: 3290,
+        electric: false,
+        travel: "Rigide",
+        wheel: '700c',
+        imageText: "Cadre carbone léger, idéal cols fribourgeois et vaudois.",
+        tags: ["Carbone", "Compact 50/34", "Freins à disque"]
+      },
+      {
+        id: 2,
+        name: "Endurance 02 Disc",
+        brand: "CyclAlp",
+        type: "route",
+        use: "endurance",
+        price: 2590,
+        electric: false,
+        travel: "Rigide",
+        wheel: '700c',
+        imageText: "Géométrie confortable pour longues distances.",
+        tags: ["Aluminium", "Position confort", "Pneus 30 mm"]
+      },
+      {
+        id: 3,
+        name: "Gravel Alp Explorer",
+        brand: "CyclAlp",
+        type: "gravel",
+        use: "voyage",
+        price: 2890,
+        electric: false,
+        travel: "Rigide",
+        wheel: '700c',
+        imageText: "Prêt pour chemins blancs & bikepacking en Préalpes.",
+        tags: ["Œillets sacoches", "Pneus 40 mm", "Transmission mono"]
+      },
+      {
+        id: 4,
+        name: "Gravel LT Électrique",
+        brand: "CyclAlp",
+        type: "gravel",
+        use: "voyage",
+        price: 4390,
+        electric: true,
+        travel: "Rigide",
+        wheel: '700c',
+        imageText: "Assistance fluide pour allonger les boucles.",
+        tags: ["Moteur central", "Batterie 500 Wh", "Freins 4 pistons"]
+      },
+      {
+        id: 5,
+        name: "Trail 130",
+        brand: "CyclAlp",
+        type: "vtt",
+        use: "trail",
+        price: 2990,
+        electric: false,
+        travel: "130/120 mm",
+        wheel: '29"',
+        imageText: "VTT joueur pour singles et boucles locales.",
+        tags: ["Tout-suspendu", "Tige de selle télescopique", "Freins 4 pistons"]
+      },
+      {
+        id: 6,
+        name: "All-Mountain 150 AE",
+        brand: "CyclAlp",
+        type: "vtt",
+        use: "trail",
+        price: 5290,
+        electric: true,
+        travel: "160/150 mm",
+        wheel: '29"',
+        imageText: "Pour avaler du dénivelé en station comme en forêt.",
+        tags: ["Moteur central", "Batterie 625 Wh", "Suspensions réglables"]
+      },
+      {
+        id: 7,
+        name: "Urbain Daily",
+        brand: "CyclAlp City",
+        type: "urbain",
+        use: "urbain",
+        price: 1890,
+        electric: false,
+        travel: "Rigide",
+        wheel: '700c',
+        imageText: "Parfait pour trajets quotidiens & courses.",
+        tags: ["Garde-boue", "Porte-bagages", "Éclairage intégré"]
+      },
+      {
+        id: 8,
+        name: "Urbain Daily AE",
+        brand: "CyclAlp City",
+        type: "urbain",
+        use: "urbain",
+        price: 3290,
+        electric: true,
+        travel: "Rigide",
+        wheel: '700c',
+        imageText: "Assistance pour trajets pendulaires vallonnés.",
+        tags: ["Moteur moyeu", "Batterie intégrée", "Éclairage sur batterie"]
+      },
+      {
+        id: 9,
+        name: "Trekking Tourer",
+        brand: "CyclAlp",
+        type: "urbain",
+        use: "voyage",
+        price: 2490,
+        electric: false,
+        travel: "Rigide",
+        wheel: '700c',
+        imageText: "Pour cyclotourisme & voyages itinérants.",
+        tags: ["Porte-bagages avant/arrière", "Position droite", "Transmission 3x10"]
+      }
+    ];
+
+    const bikesGrid = document.getElementById("bikesGrid");
+    const resultsCount = document.getElementById("resultsCount");
+    const resultsEmpty = document.getElementById("resultsEmpty");
+
+    const filterType = document.getElementById("filterType");
+    const filterUse = document.getElementById("filterUse");
+    const filterElectricOnly = document.getElementById("filterElectricOnly");
+    const filterMaxPrice = document.getElementById("filterMaxPrice");
+    const sortBySelect = document.getElementById("sortBy");
+    const resetFiltersBtn = document.getElementById("resetFilters");
+
+    function formatPrice(price) {
+      return price.toLocaleString("fr-CH", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }) + " CHF";
+    }
+
+    function applyFilters() {
+      let filtered = bikes.slice();
+
+      const typeValue = filterType.value;
+      const useValue = filterUse.value;
+      const electricOnly = filterElectricOnly.checked;
+      const maxPrice = filterMaxPrice.value ? parseInt(filterMaxPrice.value, 10) : null;
+
+      if (typeValue) {
+        filtered = filtered.filter(b => b.type === typeValue);
+      }
+
+      if (useValue) {
+        filtered = filtered.filter(b => b.use === useValue);
+      }
+
+      if (electricOnly) {
+        filtered = filtered.filter(b => b.electric);
+      }
+
+      if (!isNaN(maxPrice) && maxPrice !== null) {
+        filtered = filtered.filter(b => b.price <= maxPrice);
+      }
+
+      const sortValue = sortBySelect.value;
+      if (sortValue === "price-asc") {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sortValue === "price-desc") {
+        filtered.sort((a, b) => b.price - a.price);
+      } else if (sortValue === "brand") {
+        filtered.sort((a, b) => (a.brand + a.name).localeCompare(b.brand + b.name, "fr"));
+      }
+
+      renderBikes(filtered);
+    }
+
+    function renderBikes(list) {
+      bikesGrid.innerHTML = "";
+
+      if (list.length === 0) {
+        resultsEmpty.style.display = "block";
+        resultsCount.textContent = "Aucun vélo trouvé";
+        return;
+      }
+
+      resultsEmpty.style.display = "none";
+      resultsCount.textContent =
+        list.length + (list.length > 1 ? " vélos trouvés" : " vélo trouvé");
+
+      list.forEach(bike => {
+        const card = document.createElement("article");
+        card.className = "bike-card";
+
+        const image = document.createElement("div");
+        image.className = "bike-card__image";
+        image.textContent = bike.imageText;
+
+        const body = document.createElement("div");
+        body.className = "bike-card__body";
+
+        const name = document.createElement("div");
+        name.className = "bike-card__name";
+        name.textContent = bike.name;
+
+        const brand = document.createElement("div");
+        brand.className = "bike-card__brand";
+        brand.textContent = bike.brand;
+
+        const meta = document.createElement("div");
+        meta.className = "bike-card__meta";
+        const typeLabels = {
+          route: "Route",
+          gravel: "Gravel",
+          vtt: "VTT",
+          urbain: "Urbain / trekking"
+        };
+        const useLabels = {
+          endurance: "Endurance / longue distance",
+          montagne: "Montagne / cols",
+          trail: "Trail / all-mountain",
+          urbain: "Urbain / déplacements",
+          voyage: "Voyage / bikepacking"
+        };
+        const electricLabel = bike.electric ? "Électrique" : "Musculaire";
+        meta.textContent =
+          typeLabels[bike.type] + " · " +
+          useLabels[bike.use] + " · " +
+          electricLabel;
+
+        const price = document.createElement("div");
+        price.className = "bike-card__price";
+        price.textContent = "dès " + formatPrice(bike.price);
+
+        const tagsContainer = document.createElement("div");
+        tagsContainer.className = "bike-card__tags";
+
+        if (bike.electric) {
+          const tagElectric = document.createElement("span");
+          tagElectric.className = "tag tag--green";
+          tagElectric.textContent = "Électrique";
+          tagsContainer.appendChild(tagElectric);
+        }
+
+        if (Array.isArray(bike.tags)) {
+          bike.tags.forEach(t => {
+            const tag = document.createElement("span");
+            tag.className = "tag";
+            tag.textContent = t;
+            tagsContainer.appendChild(tag);
+          });
+        }
+
+        const cta = document.createElement("div");
+        cta.className = "bike-card__cta";
+        cta.textContent = "Détails & dispo en magasin";
+
+        body.appendChild(name);
+        body.appendChild(brand);
+        body.appendChild(meta);
+        body.appendChild(price);
+        body.appendChild(tagsContainer);
+        body.appendChild(cta);
+
+        card.appendChild(image);
+        card.appendChild(body);
+
+        bikesGrid.appendChild(card);
+      });
+    }
+
+    // Écouteurs filtres
+    [filterType, filterUse, filterElectricOnly, filterMaxPrice, sortBySelect]
+      .forEach(el => {
+        el.addEventListener("input", applyFilters);
+        el.addEventListener("change", applyFilters);
+      });
+
+    resetFiltersBtn.addEventListener("click", () => {
+      filterType.value = "";
+      filterUse.value = "";
+      filterElectricOnly.checked = false;
+      filterMaxPrice.value = "";
+      sortBySelect.value = "price-asc";
+      applyFilters();
+    });
+
+    // Initialisation
+    applyFilters();
+  </script>
+</body>
+</html>
