@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>CyclAlp – Vélos & Atelier à Châtel-St-Denis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg-dark: #05060a;
+      --bg-light: #f4f7fa;
+      --accent: #00a878;          /* Vert CyclAlp */
+      --accent-soft: #c5f0e3;
+      --text-main: #1f2933;
+      --text-light: #ffffff;
+      --max-width: 1200px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text-main);
+      background: #ffffff;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* Bandeau top info */
+
+    .top-bar {
+      background: #111827;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      padding: 6px 16px;
+    }
+
+    .top-bar__inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .top-bar__left {
+      font-weight: 500;
+    }
+
+    .top-bar__right {
+      display: flex;
+      gap: 16px;
+      font-size: 0.8rem;
+    }
+
+    /* Header + navigation */
+
+    header {
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #ffffffee;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      position: relative;
+    }
+
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav__logo img {
+      height: 32px;
+      width: auto;
+      display: block;
+    }
+
+    .nav__logo span {
+      color: var(--accent);
+    }
+
+    .nav__menu {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 0.9rem;
+    }
+
+    .nav__item {
+      position: relative;
+    }
+
+    .nav__link {
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      padding: 4px 0;
+    }
+
+    .nav__item:hover .nav__link {
+      color: var(--accent);
+    }
+
+    /* Sous-menus */
+
+    .nav__dropdown {
+      position: absolute;
+      top: 130%;
+      left: 0;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      min-width: 220px;
+      padding: 12px 0;
+      display: none;
+      z-index: 100;
+    }
+
+    .nav__item:hover .nav__dropdown {
+      display: block;
+    }
+
+    .nav__dropdown a {
+      display: block;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .nav__dropdown a:hover {
+      background: #f3f4f6;
+      color: var(--accent);
+    }
+
+    .nav__cta {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 8px 18px;
+      border: 1px solid var(--accent);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn--solid {
+      background: var(--accent);
+      color: var(--text-light);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    /* Burger mobile */
+
+    .nav__burger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .nav__burger span {
+      width: 20px;
+      height: 2px;
+      background: #111827;
+    }
+
+    /* Hero */
+
+    .hero {
+      background: radial-gradient(circle at top, #1f2937 0, #020617 55%, #020617 100%);
+      color: var(--text-light);
+      padding: 64px 16px 72px;
+    }
+
+    .hero__inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero__eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-bottom: 12px;
+    }
+
+    .hero__title {
+      font-size: clamp(2rem, 3vw + 1rem, 3rem);
+      margin-bottom: 16px;
+    }
+
+    .hero__title span {
+      color: var(--accent);
+    }
+
+    .hero__subtitle {
+      font-size: 0.98rem;
+      max-width: 34rem;
+      margin-bottom: 24px;
+      color: #e5e7eb;
+    }
+
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .hero__actions .btn {
+      border-width: 1px;
+    }
+
+    .hero__actions .btn--outline {
+      border-color: #9ca3af;
+      color: #e5e7eb;
+    }
+
+    .hero__meta {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .hero__image {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      min-height: 260px;
+      background-image: url("https://images.pexels.com/photos/248762/pexels-photo-248762.jpeg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero__badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(15,23,42,0.9);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero__badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .hero__tag {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background: rgba(15,23,42,0.95);
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 0.8rem;
+      max-width: 220px;
+    }
+
+    /* Section wrapper */
+
+    .section {
+      padding: 56px 16px;
+    }
+
+    .section--soft {
+      background: var(--bg-light);
+    }
+
+    .section__inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .section__eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .section__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .section__title {
+      font-size: 1.6rem;
+    }
+
+    .section__subtitle {
+      font-size: 0.9rem;
+      max-width: 26rem;
+      color: #6b7280;
+    }
+
+    /* Produits / gammes */
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card__image {
+      background: radial-gradient(circle at top, #0f172a 0, #020617 65%);
+      padding: 24px;
+      min-height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-card__image-inner {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,168,120,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: #e5e7eb;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .product-card__body {
+      padding: 16px 18px 18px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .product-card__name {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .product-card__meta {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .product-card__price {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .product-card__cta {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+    }
+
+    /* Univers / blocs */
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .category-card {
+      border-radius: 18px;
+      overflow: hidden;
+      background: #0b1120;
+      color: var(--text-light);
+      position: relative;
+      min-height: 140px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .category-card__title {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .category-card__link {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      opacity: 0.9;
+      margin-top: 8px;
+      color: var(--accent-soft);
+    }
+
+    /* Split / atelier */
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 36px;
+      margin-top: 16px;
+    }
+
+    .split__image {
+      border-radius: 20px;
+      min-height: 220px;
+      background-image: url("https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .split__text p {
+      font-size: 0.95rem;
+      color: #4b5563;
+      margin-bottom: 12px;
+    }
+
+    .pill-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .pill-links a {
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      background: #ffffff;
+    }
+
+    /* Boutique / lieu */
+
+    .boutiques {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 32px;
+      margin-top: 16px;
+    }
+
+    .boutiques__list {
+      display: grid;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+
+    .boutique-item strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    .boutique-item span {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .boutiques__map {
+      border-radius: 18px;
+      min-height: 220px;
+      background: radial-gradient(circle at top, #0b1120 0, #020617 65%);
+      color: var(--text-light);
+      padding: 18px;
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Services */
+
+    .services-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
+      font-size: 0.85rem;
+    }
+
+    .service {
+      text-align: center;
+    }
+
+    .service__title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .service__desc {
+      color: #6b7280;
+    }
+
+    /* Newsletter */
+
+    .newsletter {
+      max-width: 520px;
+      padding-top: 8px;
+    }
+
+    .newsletter form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .newsletter input[type="email"] {
+      flex: 1;
+      min-width: 180px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      font-size: 0.9rem;
+    }
+
+    .newsletter small {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    /* Footer */
+
+    footer {
+      background: #020617;
+      color: #9ca3af;
+      padding: 32px 16px 16px;
+      font-size: 0.8rem;
+    }
+
+    .footer__inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr repeat(3, minmax(0, 1fr));
+      gap: 32px;
+    }
+
+    .footer__title {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.7rem;
+      margin-bottom: 8px;
+      color: #e5e7eb;
+    }
+
+    .footer__logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .footer__logo img {
+      height: 26px;
+      width: auto;
+      display: block;
+    }
+
+    .footer__logo-text {
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #ffffff;
+      font-size: 0.9rem;
+    }
+
+    .footer__links a {
+      display: block;
+      margin-bottom: 4px;
+      color: #9ca3af;
+    }
+
+    .footer__bottom {
+      max-width: var(--max-width);
+      margin: 20px auto 0;
+      border-top: 1px solid #111827;
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Responsif */
+
+    @media (max-width: 960px) {
+      .hero__inner,
+      .split,
+      .boutiques {
+        grid-template-columns: 1fr;
+      }
+
+      .section__header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .categories-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .services-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .footer__inner {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav__menu,
+      .nav__cta {
+        display: none;
+      }
+
+      .nav__burger {
+        display: flex;
+      }
+
+      .nav--open .nav__menu,
+      .nav--open .nav__cta {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        inset: 100% 0 auto;
+        padding: 16px;
+        background: #fff;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .nav--open {
+        position: relative;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .categories-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .services-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .footer__inner {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bandeau haut -->
+  <div class="top-bar">
+    <div class="top-bar__inner">
+      <div class="top-bar__left">
+        Atelier CyclAlp – Révision complète offerte au 5<sup>e</sup> service
+      </div>
+      <div class="top-bar__right">
+        <span>Châtel-St-Denis</span>
+        <span>Atelier & e-boutique</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <header>
+    <nav class="nav" id="mainNav">
+      <div class="nav__logo">
+        <!-- Mets ton fichier de logo ici -->
+        <img src="logo-cyclalp.svg" alt="Logo CyclAlp" onerror="this.style.display='none';">
+        <div>
+          CYC<span>ALP</span>
+        </div>
+      </div>
+
+      <div class="nav__menu">
+        <div class="nav__item">
+          <a href="#velos" class="nav__link">Vélos</a>
+          <div class="nav__dropdown">
+            <a href="#velos">Route & Endurance</a>
+            <a href="#velos">Gravel & Aventure</a>
+            <a href="#velos">VTT & All-Mountain</a>
+            <a href="#velos">Vélos électriques</a>
+          </div>
+        </div>
+        <div class="nav__item">
+          <a href="#atelier" class="nav__link">Atelier</a>
+          <div class="nav__dropdown">
+            <a href="#atelier">Révision & entretien</a>
+            <a href="#atelier">Montage à la carte</a>
+            <a href="#atelier">Préparation saison</a>
+          </div>
+        </div>
+        <div class="nav__item">
+          <a href="#occasions" class="nav__link">Occasions</a>
+          <div class="nav__dropdown">
+            <a href="#occasions">Vélos révisés</a>
+            <a href="#occasions">Reprise & dépôt</a>
+          </div>
+        </div>
+        <div class="nav__item">
+          <a href="#univers" class="nav__link">Univers CyclAlp</a>
+          <div class="nav__dropdown">
+            <a href="#univers">Notre philosophie</a>
+            <a href="#univers">Sorties & événements</a>
+          </div>
+        </div>
+        <div class="nav__item">
+          <a href="#boutique" class="nav__link">Boutique</a>
+        </div>
+      </div>
+
+      <div class="nav__cta">
+        <button class="btn">Prendre RDV atelier</button>
+        <button class="btn btn--solid">E-boutique</button>
+      </div>
+
+      <div class="nav__burger" id="burger">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__inner">
+      <div>
+        <div class="hero__eyebrow">Magasin & atelier vélo – Châtel-St-Denis</div>
+        <h1 class="hero__title">
+          Cycl<span>Alp</span>, votre base camp vélo au pied des Préalpes
+        </h1>
+        <p class="hero__subtitle">
+          Vélos de route, gravel, VTT et électriques, sélectionnés pour les
+          reliefs suisses. Atelier expert, conseils personnalisés, et un vrai
+          lieu de passionnés pour préparer vos sorties en montagne.
+        </p>
+        <div class="hero__actions">
+          <button class="btn btn--solid">Découvrir les vélos</button>
+          <button class="btn btn--outline">Voir les services atelier</button>
+        </div>
+        <div class="hero__meta">
+          Réglage express · Service suspension · Préparation hiver & saison estivale
+        </div>
+      </div>
+      <div class="hero__image">
+        <div class="hero__badge">
+          <span class="hero__badge-dot"></span>
+          Atelier ouvert aujourd’hui
+        </div>
+        <div class="hero__tag">
+          Tests sur route & chemins autour de Châtel-St-Denis.  
+          Réservez votre créneau d’essai en magasin.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gammes vélos -->
+  <section class="section" id="velos">
+    <div class="section__inner">
+      <div class="section__header">
+        <div>
+          <div class="section__eyebrow">Nos gammes</div>
+          <h2 class="section__title">Vélos sélectionnés pour les Alpes</h2>
+        </div>
+        <p class="section__subtitle">
+          Une sélection de marques et de montages pensés pour grimper, descendre
+          et rouler longtemps, que ce soit sur route, chemins ou sentiers.
+        </p>
+      </div>
+
+      <div class="products-grid">
+        <article class="product-card">
+          <div class="product-card__image">
+            <div class="product-card__image-inner">
+              Cadres légers, développements adaptés  
+              pour les grands cols suisses
+            </div>
+          </div>
+          <div class="product-card__body">
+            <div class="product-card__name">Route & Endurance</div>
+            <div class="product-card__meta">
+              Pour les longues sorties et les cyclosportives en montagne.
+            </div>
+            <div class="product-card__price">dès 2 490&nbsp;CHF</div>
+            <div class="product-card__cta">Voir les modèles</div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-card__image">
+            <div class="product-card__image-inner">
+              Polyvalence totale : routes,  
+              pistes forestières et chemins blancs
+            </div>
+          </div>
+          <div class="product-card__body">
+            <div class="product-card__name">Gravel & Aventure</div>
+            <div class="product-card__meta">
+              Idéal pour alterner bitume, chemins et voyages en bikepacking.
+            </div>
+            <div class="product-card__price">dès 2 190&nbsp;CHF</div>
+            <div class="product-card__cta">Voir les modèles</div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-card__image">
+            <div class="product-card__image-inner">
+              Suspensions ajustées,  
+              géométrie ludique & sécurisante
+            </div>
+          </div>
+          <div class="product-card__body">
+            <div class="product-card__name">VTT & All-Mountain</div>
+            <div class="product-card__meta">
+              Pour les singles, bikeparks et boucles techniques.
+            </div>
+            <div class="product-card__price">dès 2 350&nbsp;CHF</div>
+            <div class="product-card__cta">Voir les modèles</div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-card__image">
+            <div class="product-card__image-inner">
+              Assistance fluide,  
+              batteries adaptées au dénivelé
+            </div>
+          </div>
+          <div class="product-card__body">
+            <div class="product-card__name">Vélos électriques</div>
+            <div class="product-card__meta">
+              Urbain, trekking ou VTT AE pour profiter des reliefs sans stress.
+            </div>
+            <div class="product-card__price">dès 3 390&nbsp;CHF</div>
+            <div class="product-card__cta">Voir les modèles</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Univers CyclAlp -->
+  <section class="section section--soft" id="univers">
+    <div class="section__inner">
+      <div class="section__header">
+        <div>
+          <div class="section__eyebrow">Univers CyclAlp</div>
+          <h2 class="section__title">Bien plus qu’un magasin de vélos</h2>
+        </div>
+        <p class="section__subtitle">
+          Un lieu de vie vélo, avec atelier, conseils, accessoires, et
+          sorties organisées dans les Préalpes fribourgeoises.
+        </p>
+      </div>
+
+      <div class="categories-grid">
+        <article class="category-card">
+          <div class="category-card__title">Atelier expert</div>
+          <div>
+            Entretien complet, hydraulique, suspensions, transmissions,
+            montage à la carte et préparation pour la saison.
+          </div>
+          <div class="category-card__link">Voir les prestations</div>
+        </article>
+        <article class="category-card" id="atelier">
+          <div class="category-card__title">Bikefitting & position</div>
+          <div>
+            Analyse de position, réglages personnalisés et choix des
+            composants pour rouler longtemps sans douleur.
+          </div>
+          <div class="category-card__link">Prendre rendez-vous</div>
+        </article>
+        <article class="category-card" id="occasions">
+          <div class="category-card__title">Vélos d’occasion</div>
+          <div>
+            Vélos soigneusement révisés et garantis, avec options de
+            reprise et de dépôt-vente.
+          </div>
+          <div class="category-card__link">Voir les occasions</div>
+        </article>
+        <article class="category-card">
+          <div class="category-card__title">Sorties & événements</div>
+          <div>
+            Rides encadrés, soirées techniques, tests de nouveautés
+            et rencontres entre passionnés.
+          </div>
+          <div class="category-card__link">Calendrier</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Atelier & services -->
+  <section class="section">
+    <div class="section__inner">
+      <div class="section__header">
+        <div>
+          <div class="section__eyebrow">Atelier CyclAlp</div>
+          <h2 class="section__title">
+            Entretien & préparation pour les reliefs suisses
+          </h2>
+        </div>
+        <p class="section__subtitle">
+          Une équipe qui roule, qui règle et qui teste au quotidien les
+          mêmes conditions que vous. On parle dénivelé, météo et terrain réel.
+        </p>
+      </div>
+
+      <div class="split">
+        <div class="split__text">
+          <p>
+            De la révision de base au montage intégral, l’atelier CyclAlp
+            prend en charge tous les vélos du magasin, mais aussi les vélos
+            que vous possédez déjà, dans la limite de nos compatibilités de
+            pièces et standards.
+          </p>
+          <p>
+            Freins à disque, purge hydraulique, réglage de suspensions,
+            mise à jour moteurs électriques, préparation hivernale ou
+            avant-saison : chaque intervention est documentée et expliquée.
+          </p>
+          <div class="pill-links">
+            <a href="#">Révision standard</a>
+            <a href="#">Révision alpine</a>
+            <a href="#">Service suspensions</a>
+            <a href="#">Montage à la carte</a>
+          </div>
+        </div>
+        <div class="split__image"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Boutique & localisation -->
+  <section class="section section--soft" id="boutique">
+    <div class="section__inner">
+      <div class="section__header">
+        <div>
+          <div class="section__eyebrow">Magasin CyclAlp</div>
+          <h2 class="section__title">Votre point de départ à Châtel-St-Denis</h2>
+        </div>
+        <p class="section__subtitle">
+          Facile d’accès en voiture ou transports publics, avec départ
+          direct vers les cols et chemins environnants.
+        </p>
+      </div>
+
+      <div class="boutiques">
+        <div class="boutiques__list">
+          <div class="boutique-item">
+            <strong>CyclAlp – Magasin & atelier</strong>
+            <span>Rue des Préalpes 10 — 1618 Châtel-St-Denis</span>
+          </div>
+          <div class="boutique-item">
+            <strong>Accès</strong>
+            <span>À 5 min à pied de la gare · Parking à proximité immédiate</span>
+          </div>
+          <div class="boutique-item">
+            <strong>Horaires</strong>
+            <span>
+              Mardi – Vendredi : 9h – 12h / 13h30 – 18h30<br />
+              Samedi : 9h – 16h non-stop
+            </span>
+          </div>
+          <div class="boutique-item">
+            <strong>Contact</strong>
+            <span>+41 (0)21 000 00 00 · hello@cyclalp.ch</span>
+          </div>
+        </div>
+
+        <div class="boutiques__map">
+          <div>
+            <strong>Retrait & tests</strong>
+            <p>
+              Commandez en ligne et retirez vos vélos, pièces ou accessoires
+              en magasin. Possibilité d’essai sur un parcours balisé autour
+              du shop.
+            </p>
+          </div>
+          <div>
+            <strong>Services sur place</strong>
+            <p>
+              Café d’accueil, briefing parcours, conseils sur les boucles
+              locales (temps, D+, difficultés).
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services clés -->
+  <section class="section">
+    <div class="section__inner">
+      <div class="services-strip">
+        <div class="service">
+          <div class="service__title">Atelier certifié</div>
+          <div class="service__desc">
+            Formé aux dernières transmissions, freins et moteurs électriques.
+          </div>
+        </div>
+        <div class="service">
+          <div class="service__title">Service rapide</div>
+          <div class="service__desc">
+            Petites interventions possibles dans la journée sur rendez-vous.
+          </div>
+        </div>
+        <div class="service">
+          <div class="service__title">Conseil local</div>
+          <div class="service__desc">
+            Parcours testés & approuvés par l’équipe CyclAlp, selon votre niveau.
+          </div>
+        </div>
+        <div class="service">
+          <div class="service__title">Financement & reprise</div>
+          <div class="service__desc">
+            Solutions de paiement échelonné et reprise de votre ancien vélo.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="section section--soft">
+    <div class="section__inner">
+      <div class="section__header">
+        <div>
+          <div class="section__eyebrow">Restez connectés</div>
+          <h2 class="section__title">Newsletter CyclAlp</h2>
+        </div>
+        <p class="section__subtitle">
+          Nouveautés vélos, tests, soirées techniques et sorties organisées
+          autour de Châtel-St-Denis.
+        </p>
+      </div>
+
+      <div class="newsletter">
+        <form>
+          <input type="email" placeholder="Votre adresse e-mail" required />
+          <button type="submit" class="btn btn--solid">
+            Je m’inscris
+          </button>
+        </form>
+        <small>
+          En vous inscrivant, vous acceptez de recevoir les actualités CyclAlp.
+          Vous pourrez vous désabonner en un clic.
+        </small>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer__inner">
+      <div>
+        <div class="footer__logo">
+          <img src="logo-cyclalp.svg" alt="Logo CyclAlp" onerror="this.style.display='none';">
+          <span class="footer__logo-text">CYCALP</span>
+        </div>
+        <p>
+          Magasin & atelier vélo indépendant à Châtel-St-Denis, dédié aux
+          cyclistes de route, gravel, VTT et AE qui roulent en montagne.
+        </p>
+      </div>
+      <div>
+        <div class="footer__title">Contact</div>
+        <p>
+          CyclAlp – Magasin & atelier<br />
+          Rue des Préalpes 10<br />
+          1618 Châtel-St-Denis
+        </p>
+        <p>
+          Tél. +41 (0)21 000 00 00<br />
+          hello@cyclalp.ch
+        </p>
+      </div>
+      <div>
+        <div class="footer__title">Découvrir</div>
+        <div class="footer__links">
+          <a href="#velos">Vélos</a>
+          <a href="#atelier">Atelier</a>
+          <a href="#occasions">Occasions</a>
+          <a href="#univers">Sorties & événements</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer__title">Infos</div>
+        <div class="footer__links">
+          <a href="#">CGV</a>
+          <a href="#">Conditions atelier</a>
+          <a href="#">Politique de confidentialité</a>
+          <a href="#">Plan du site</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© 2025 CyclAlp</span>
+      <span>Suivez-nous · Instagram · Strava · Facebook</span>
+    </div>
+  </footer>
+
+  <script>
+    // Burger mobile
+    const burger = document.getElementById("burger");
+    const nav = document.getElementById("mainNav");
+
+    burger.addEventListener("click", () => {
+      nav.classList.toggle("nav--open");
+    });
+
+    // Scroll doux pour les liens internes
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener("click", e => {
+        const targetId = link.getAttribute("href").substring(1);
+        const target = document.getElementById(targetId);
+        if (target) {
+          e.preventDefault();
+          window.scrollTo({
+            top: target.offsetTop - 80,
+            behavior: "smooth"
+          });
+          nav.classList.remove("nav--open");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
